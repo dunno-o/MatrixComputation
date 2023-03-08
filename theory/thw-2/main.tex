@@ -1,0 +1,377 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{indentfirst}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{soul}
+\geometry{a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\makeatletter
+\def\thickhrulefill#1{\leavevmode\leaders\hrule height#1\hfill\kern\z@}
+\makeatother
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Розовый текст в рамке
+\newcommand{\pinkframed}[2][rectangle,draw,fill=purple!20]{%
+	\tikz[baseline=-0.6ex] \node [#1]{#2};}%
+
+\newenvironment{result} { \sgap
+	\smallskip
+	\pinkframed{ \textbf{Ответ:} }}{}
+
+\renewcommand{\headrule}{
+	\color{black}\vspace{-8pt}
+	\thickhrulefill{.6pt}
+
+	\vspace{-9pt}\thickhrulefill{2.4pt}
+}
+
+\newcommand{\un}{\underline}
+\newcommand{\ov}{\overline}
+
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\CC}{\mathbb{C}}
+
+\newcommand{\A}{\; \forall \;}
+\newcommand{\E}{\; \exists \;}
+\newcommand{\nE}{\; \nexists \;}
+
+\newcommand{\vp}{\varphi}
+\newcommand{\e}{\varepsilon}
+\newcommand{\lm}{\lambda}
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\prob}[1]{\item \textbf{(#1 баллов)}.}
+
+
+\rhead{Парфенов Артем БПМИ219}
+\lhead{Основы матричных вычислений ДЗ-2}
+\begin{document}
+
+\textcolor{blue}{Во всех задачах считайте, что $m,n\geq 2$.}
+\begin{enumerate}
+	\prob{12} Найдите скелетное разложение вида $C\widehat A^{-1} R$ матрицы $m\times n$  с элементами: \[a_{ij} = \frac{i}{j} + \frac{j}{i}.\] Нумерация индексов начинается с $1$.
+
+		Матрица имеет вид: $\begin{pmatrix}
+			2 && 2 + \frac{1}{2} && \dots && n + \frac{1}{n} \\
+			2 + \frac{1}{2} && 2 && \dots && \frac{2}{n} + \frac{n}{2} \\
+			\vdots && \vdots && \dots && \vdots \\
+			m + \frac{1}{m} && \frac{m}{2} + \frac{2}{m} && \dots && \frac{m}{n} + \frac{n}{m} \\
+		\end{pmatrix} = \begin{pmatrix}
+		1 && \frac{1}{2} && \dots && \frac{1}{n} \\ 
+		2 && 1 && \dots && \frac{2}{n} \\
+		\vdots && \vdots && \dots && \vdots \\
+		m && \frac{m}{2} && \dots && \frac{m}{n} \\
+	\end{pmatrix} + \begin{pmatrix}
+		1 && 2 && \dots && n \\
+		\frac{1}{2} && 1 && \dots && \frac{n}{2} \\
+		\vdots && \vdots && \dots && \vdots \\
+		\frac{1}{m} && \frac{2}{m} && \dots && \frac{n}{m} \\
+		\end{pmatrix}$
+	
+	 ранги двух матриц - слагаемых равны единиц, тк их можно представить в виде произведения двух векторов (от 1 до m и от 1 до 1/n), таким образом ранг суммы не превосходит двух.
+	 
+	 
+
+		\begin{enumerate}
+			\item 	Хотим узнать ранг, для этого посчитаем миноры. Не помню, как они обозначались в линале, договоримся, что буквой t.
+
+			$t_0 = 2 \neq 0, t_1 = 4 - 2(2 + \frac{1}{2}) \neq 0$
+
+			$t_2 = 0$, значит старший ненулевой минор - второй(индекс равен 1), откуда ранг матрицы равен 2. Потому что второй минор ненулевой, значит - ранг не меньше 2.
+
+			\item Теперь строим CUR-разложение:
+
+				Раз знаем, что ранг 2, значит возьмём верхнюю левую подматрицу в качестве $\widehat A$
+
+				$C\widehat A^{-1} R = \begin{pmatrix}
+					2 && 2 + \frac{1}{2} \\
+					2 + \frac{1}{2} && 2 \\
+					\vdots && \vdots \\
+					m + \frac{1}{m} && \frac{m}{2} + \frac{2}{m} \\
+				\end{pmatrix} \cdot \begin{pmatrix}
+				\frac{-8}{9} & \frac{10}{9} \\
+				\frac{10}{9} & \frac{-8}{9}
+			\end{pmatrix} \cdot \begin{pmatrix}
+				2 && 2 + \frac{1}{2} && \dots && n + \frac{1}{n} \\
+				2 + \frac{1}{2} && 2 && \dots && \frac{2}{n} + \frac{n}{2} \\
+		\end{pmatrix}$
+
+		\end{enumerate}
+
+
+
+
+	\prob{15}
+	Пусть $S,S_1, S_2\subset \mathbb{R}^n$, а $S^\perp,S_1^\perp, S_2^\perp$ -- их ортогональные дополнения.
+	\begin{enumerate}
+		\item Покажите, что $\mathrm{dist}(S_1,S_2) = \mathrm{dist}(S^\perp_1,S^\perp_2)$.
+
+			$\square$
+
+			$\mathrm{dist}(S_1,S_2) = \|P_1 - P_2 \|_2$, где $P_1, P_2$ - соответствующие ортопроекторы.
+
+			Знаем, что $\|-t\|_2 = \| t\|_2$
+
+			$\mathrm{dist}(S^\perp_1,S^\perp_2) = \|(I - P_1) - (I - P_2)\|_2$ из свойств ортопроектора
+
+			$= \|P_2 - P_1\|_2 = \|-(P_1 - P_2)\|_2 = \|P_1 - P_2 \|_2 = \mathrm{dist}(S_1,S_2) \hfill \blacksquare$
+
+		\item Найдите $\mathrm{dist}(S,S^\perp)$.
+
+			$\|P - I + P \|_2 = \|2P - I \|_2 = \lambda_{max}((2P - I)^*(2P - I))$ звезда - это эрмитово сопряжение
+
+			$(2P - I)^*(2P - I) = 4P^*P - 2P^* - 2P + I = 4P^2 - 4P + I$ (тк P - ортопроектор)
+
+			$= 4P - 4P + I = I$ (по тем же причинам)
+
+			$(I - \lambda I) = 0$
+
+			$\lambda = 1$ это я типа харчлен написал.
+
+			Ну все, лямбда равна единице, значит и вторая норма, значит и дист.
+
+	\end{enumerate}
+	\prob{15}
+	Пусть $U = [U_r\ U_r^\perp ]\in\textcolor{blue}{\mathbb{C}^{m\times m}}$ -- матрица левых сингулярных векторов матрицы $A\in \mathbb{C}^{m\times n}$ ранга $r$. Покажите, что $\mathrm{ker}(A^*) = \mathrm{Im}(U_r^\perp)$ и запишите ортопроектор на \textcolor{blue}{$\mathrm{ker}(A^*)$}.
+	
+	
+		$\square$
+
+		\begin{enumerate}
+				\item $x \in Im(U_r^\perp) \implies x \in \mathrm{ker}(A^*) \Longleftrightarrow Im(U_r^\perp) \subseteq \mathrm{ker}(A^*)$
+
+				$\forall x \in Im(U_r^\perp) \implies \exists U_r^\perp t = x \implies A^* x = V \Sigma^* U^* U \begin{pmatrix}
+					0 \\
+					t \\
+				\end{pmatrix} = V \Sigma^* I \begin{pmatrix}
+				0 \\
+				t \\
+			\end{pmatrix} = 0$
+
+			тк сигма состоит из диагонального блока слева вверху, а вектор t в этом месте имеет нули, после произведения получится так.
+
+			\item	$ \mathrm{ker}(A^*) \subseteq   Im(U_r^\perp)$
+			
+				$\sqsupset x \in \mathrm{ker}(A^*)$
+				
+					$A^* x = V \Sigma^* U^* x = 0$
+					
+					$\begin{pmatrix}
+						v_1 \bar \sigma_1 && \dots && v_r \bar \sigma_r && 0  \\ 
+					\end{pmatrix} \begin{pmatrix}
+					u_r^* \\ 
+					u_r^{\perp*} \\
+				\end{pmatrix} x =$
+			
+				назовем все кроме первой матрицы m
+				
+				$= v_1 \bar \sigma_1 m_1 + \dots + v_r \bar \sigma_r m_r = 0$
+				
+				из того, что в свд унитарные матрицы и векторы из них составляют ОНБ, верхнее выполнено $iff$
+				
+				$\bar \sigma_1 m_1 + \dots +  \bar \sigma_r m_r = 0$
+				
+				Но сигмы не нулевые, тк это сигнулярные числа, а они будут нулю равны только начиная с r + 1
+				
+				Тогда m имеет вид:
+				
+				$\begin{pmatrix}
+					0 \\
+					0 \\
+					\vdots \\
+					m_{r + 1} \\
+					m_{m} \\
+				\end{pmatrix}$
+			
+				а это то, с чего мы начинали решение в другую сторону $\hfill \blacksquare$
+				
+				\item Если $P$ - ортопроектор на $ \mathrm{Im}(U_r) \implies I - P$ на $ \mathrm{Im}(U_r^\perp) =  \mathrm{ker}(A^*)$
+				
+				$Im(A) = Im(U_r) \implies (I - P) = (I - U_r U_r^*)$ (ну как в первом пракдз)
+
+		\end{enumerate}
+
+	\prob{18} Вычислите $\frac{\partial f}{\partial x}$ для следующих функционалов, где $x\in\mathbb{R}^n$. Считайте все возникающие матрицы и векторы действительными.
+	\begin{enumerate}
+		\item $f(x) = \|Ax - b\|_2^2$;
+		
+			$\|A(x + h) - b\|_2^2 = \langle A(x + h) - b, A(x + h) - b \rangle = \langle Ax, Ax \rangle + 2 \langle Ax, Ah \rangle + \langle Ah, Ah \rangle - 2 \langle Ax, b \rangle - 2 \langle Ah, b \rangle + \langle b, b \rangle = f(x) + \langle 2Ax - 2b, Ah \rangle + \langle Ah, Ah \rangle = f(x) + 2(x^T A^T - b^T )Ah + \bar o(\| h\|_2^2) $
+			
+			откуда 
+			
+			$\frac{\partial f}{\partial x} = 2A^T(AX - b)$
+		
+		\item $f(x) = \ln(x^\top x)$, $x\not=0$.
+		
+			тут сложный функционал, поэтому брать надо по очереди 
+			
+			знаем, что $x^T x $ это просто умный способ написать $\langle x, x \rangle $
+			
+			если хотим диф, то $\langle x + h, x + h \rangle = \langle x, x \rangle + 2 \langle x, h \rangle + \bar o(\|h\|_2^2) = f(x) + 2x^Th + \bar o(\|h\|_2^2)$
+			
+			тогда диф $2x^T$
+			
+			второй кусок композиции это $\frac{\partial \ln{x}}{\partial x} = \frac{1}{x}$
+			
+			ну теперь просто формула с семинара про свойство композиции 
+			
+			$\frac{df}{dx} = \frac{2x}{x^Tx}$
+		
+	\end{enumerate}
+	\prob{20}
+	Пусть $A\in\mathbb{R}^{n\times n}$ -- симметричная матрица. Пусть $X\in\mathbb{R}^{n\times p}$, $p< n$. \textbf{Указание:} при использовании правил дифференцирования необходимо указывать, на какое конкретно правило вы ссылаетесь.
+	\begin{enumerate}
+		\item Найдите дифференциал $f(X) = X^\top A X$.
+		
+			$f(x + h) - f(x) = (x + h)^T A (x + h) - x^TAx = x^T Ah + hx^TAx + h^TAh$
+			
+			тогда диф это $x^T Ah + hx^TAx$
+			
+			тут по сути ничего не юзал, чисто by def (by order of the linear f. algebra)
+		
+		\item Найдите дифференциал $g(X) = (X^\top X)^{-1}$.
+		Напомним, что для квадратной обратимой $Y$ справедливо $d(Y^{-1})[H] = - Y^{-1} H Y^{-1}$.
+		
+			$dg = dg((X^\top X)^{-1})[d(X^\top X)] $ фанфект про композицию
+			
+			$= -(X^T X^{-1}) d(X^T X) (X^T X)^{-1} $ фанфект из условия
+			
+			$-(X^T X)^{-1} ((dX)^T X + X^T dX) (X^T X)^{-1}$ фанфект про произведение 
+			
+			kinda success
+		
+		\item Найдите $\frac{\partial w(X)}{\partial X}$, где $w(X) = \mathrm{Tr}(f(X) g(X))$. Считайте, что производная считается в точке $X$ с ортонормированными столбцами.
+		
+			$dw = d(tr(f(X) g(X))) = tr(d(f(X)g(X)))$ свойство трейса, вроде из линейности
+			
+			$= tr(df(X)[H]g(X) + dg(X)[H]f(X)) $ диф произведения 
+			
+			$= tr((H^T AX + X^T AH)g(X) - (X^T AX) (X^T X)^{-1} ((H^T X + X^T H)  (X^T X)^{-1})) = $
+			
+			$X^T X = I$ тк ОНБ
+			
+			$= tr((H^T A^T X + X^T AH)) - tr(X^T AXH^T X + X^T AXX^T H) = 2tr(X^T AH)  - tr(X^T AX H^T X) - tr(X^T AXX^TH) = 2tr(X^T AH) - tr(X^T A^T XX^T H) - tr(X^T AXX^T H) = 2tr(X^T A(I - XX^T)H)$
+			
+			тогда ответ $2(I - XX^T) A^TX$
+		
+	\end{enumerate}
+	\prob{20}
+	Пусть $A\in\mathbb{R}^{n\times n}$ -- симметричная невырожденная матрица.
+	\begin{enumerate}
+		\item Найдите матрицу $M$, такую что \[\mathrm{vec}(AX + XA) = M\,\mathrm{vec}(X)\] и укажите ее размер.
+		
+			$\mathrm{vec}(AX) =\begin{pmatrix}
+				AX^{(1)} && \dots && AX^{(n)} \\
+			\end{pmatrix}^T = (I \otimes A) \mathrm{vec}(X)$ ну это просто из связи векторизации и кронекерова произведения. 
+		
+			тк мы знаем, что $\mathrm{vec}(AXI) = (I^T \otimes A) \mathrm{vec}(X)$
+			
+			$\mathrm{vec}(AX + XA) = \mathrm{vec}(AX) + \mathrm{vec}(XA)$
+			
+			$A \otimes I = \begin{pmatrix}
+				a_{11} I && \dots && a_{1n}I \\
+				\vdots && \dots && \vdots \\
+				a_{n1} I && \dots && a_{nn} I\\ 
+			\end{pmatrix} \in \RR^{n^2 \times n^2}$
+		
+			$\mathrm{vec}(XA) = \begin{pmatrix}
+				XA^{(1)} \\
+				\vdots \\
+				XA^{(n)} \\
+			\end{pmatrix} = \begin{pmatrix}
+			a_{11}X^{(1)} + && \dots && + a_{1n} X^{(n)} \\
+			\vdots && \dots && \vdots \\
+			a_{n1}X^{(1)}  + &&  \dots &&  + a_{nn}X^{(n)} \\
+			\end{pmatrix} = (A \otimes I) \mathrm{vec}(X)$
+	
+			
+			Итого:
+			
+				$\mathrm{vec}(AX) + \mathrm{vec}(XA) = (I \otimes A + A \otimes I)\mathrm{vec}(X) = M\mathrm{vec}(X) \implies M = (I \otimes A + A \otimes I)$		
+				
+				$M \in \RR^{n^2 \times n^2}$
+		
+		\item Пусть $A = S\Lambda S^{-1}$ -- собственное разложение $A$. Выразите собственные векторы и собственные значения матрицы $M$ через $S$ и $\Lambda$. \textbf{Подсказка:} вам поможет тождество $I = SS^{-1}$ и правила Кронекерова произведения.
+		
+			Ну нам намекнули, с чего начать
+			
+			$M = (I \otimes A) + (A \otimes I) = (SS^{-1}) \otimes (S\Lambda S^{-1}) + (S \Lambda S^{-1}) \otimes (SS^{-1})$
+			
+			вспомним, что $AB \otimes CD = (A \otimes C) (B \otimes D)$
+			
+			$= (S \otimes S) (S^{-1} \otimes \Lambda S^{-1}) + (S \otimes S) (\Lambda S^{-1} \otimes S^{-1}) = (S \otimes S) (S^{-1} \otimes \Lambda S^{-1} + \Lambda S^{-1} \otimes S^{-1}) =$
+			
+			$= (S \otimes S) (I \otimes \Lambda + \Lambda\otimes  I) (S^{-1} \otimes S^{-1})$
+			
+			вспомним, что $S^{-1} \otimes S^{-1} = (S \otimes S)^{-1}$, также из диагональности $I \otimes \Lambda = \Lambda \otimes I $
+			
+			$= (S \otimes S)(\Lambda \otimes I + I \otimes \Lambda) (S \otimes S)^{-1}$
+			
+			ну и в собственном разложении нам обещали, что в левой матрице живут св, а в средней значения.
+			
+			поэтому столбцы матрицы $(S \otimes S)$ это собственные векторы, а собственные значения выглядят как значения матрицы $(\Lambda \otimes I + I \otimes \Lambda)$
+			
+			Там все ребятки на диагонали и выглядят как суммы всех возможных $\lambda_i + \lambda_j$ 
+			
+			
+					
+		\item Покажите, что решение $X\in\mathbb{R}^{n\times n}$ матричного уравнения
+		\[
+		AX + XA = B,
+		\]
+		существует и единственно для любой $B\in\mathbb{R}^{n\times n}$.
+		
+			$\mathrm{vec}(X) = \mathrm{B}$
+			
+			$\displaystyle det \mathrm{vec}(X)(AX + XA) = \prod_{i \leq j} \lambda_i + \lambda_j$
+			
+			причем этот дет не ноль из положительной определенности, то матрица полноранговая, а значит найдется единственное решение - успех. $\hfill \blacksquare$
+			
+			
+		
+	\end{enumerate}
+\end{enumerate}
+
+
+
+\subsection*{Бонусные задачи}
+\begin{enumerate}
+	\item \textbf{(25 б. баллов)}.
+	Пусть $A \in \mathbb{C}^{m\times n}$, $m> n$, и $B\in \mathbb{C}^{n\times n}$ --- ее подматрица максимального объема среди $n\times n$ подматриц. Докажите, что $\|AB^{-1}\|_C \leq 1$.
+	\item \textbf{(30 б. баллов)}.  Пусть $P,Q$ -- ортопроекторы. Покажите, что $\|P - Q\|_2 \leq 1$.
+	\item \textbf{(45 б. баллов)}. Дана матрица $A\in\mathbb{R}^{n^2\times n^2}$. Предложите, обоснуйте и запишите в виде псевдокода алгоритм решения следующей задачи:
+	\[
+	f(X) =  \|A - X \otimes X\|_F \to \min_{X\in\mathbb{R}^{n\times n}}
+	\]
+	в случае:
+	\begin{enumerate}
+		\item симметричной $A$,
+		\item произвольной $A$.
+	\end{enumerate}
+	Считайте, что помимо базовых арифметических операций с матрицами, вам доступно вычисление собственного разложения матрицы \texttt{eigs} (при условии его существования), а также функции \texttt{reshape} и \texttt{transpose}.
+	\textbf{Подсказка:} подумайте, как переписать  $f(X)$ с использованием $\mathrm{vec}(X)$.
+
+\end{enumerate}
+
+
+\end{document}
