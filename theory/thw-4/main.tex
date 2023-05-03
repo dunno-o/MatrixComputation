@@ -1,0 +1,364 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{indentfirst}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{soul}
+\geometry{a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\makeatletter
+\def\thickhrulefill#1{\leavevmode\leaders\hrule height#1\hfill\kern\z@}
+\makeatother
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Розовый текст в рамке
+\newcommand{\pinkframed}[2][rectangle,draw,fill=purple!20]{%
+	\tikz[baseline=-0.6ex] \node [#1]{#2};}%
+
+\newenvironment{result} { \sgap
+	\smallskip
+	\pinkframed{ \textbf{Ответ:} }}{}
+
+\renewcommand{\headrule}{
+	\color{black}\vspace{-8pt}
+	\thickhrulefill{.6pt}
+	
+	\vspace{-9pt}\thickhrulefill{2.4pt}
+}
+
+\newcommand{\un}{\underline}
+\newcommand{\ov}{\overline}
+
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\CC}{\mathbb{C}}
+
+\newcommand{\A}{\; \forall \;}
+\newcommand{\E}{\; \exists \;}
+\newcommand{\nE}{\; \nexists \;}
+
+\newcommand{\vp}{\varphi}
+\newcommand{\e}{\varepsilon}
+\newcommand{\lm}{\lambda}
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\prob}[1]{\item \textbf{(#1 баллов)}.}
+
+
+\rhead{Парфенов Артем БПМИ219}
+\lhead{Основы матричных вычислений ДЗ-4}
+\begin{document}
+	
+	\begin{enumerate}
+		\prob{15} Вложите блочно-теплицеву матрицу с теплицевыми блоками 
+		\[
+		\left(\begin{array}{@{}c|c@{}}
+			\begin{matrix}
+				0 & 0 \\
+				1 & 0
+			\end{matrix}
+			& 
+			\begin{matrix}
+				0 & 1 \\
+				0 & 0
+			\end{matrix}
+			\\
+			\hline
+			\begin{matrix}
+				1 & 0 \\
+				0 & 1
+			\end{matrix}
+			&
+			\begin{matrix}
+				0 & 0 \\
+				1 & 0
+			\end{matrix}
+		\end{array}\right)
+		\]
+		в $B\in\mathbb{R}^{9\times 9}$ -- блочный циркулянт с циркулянтными блоками и найдите собственное разложение~$B$.
+		
+		Вспомним, что Теплицеву матрицу порядка $n$ умеем вкладывать в циркулянт порядка $(2n - 1)$. 
+		
+		Вложение блока $\begin{pmatrix}
+			0 & 0 \\
+			1 & 0 \\
+		\end{pmatrix} = \begin{pmatrix}
+		0 & 0 & 1 \\
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		\end{pmatrix} = a$
+		
+		Вложение блока $\begin{pmatrix}
+			1 & 0 \\
+			0 & 1 \\
+		\end{pmatrix} = \begin{pmatrix}
+			1 & 0 & 0 \\
+			0 & 1 & 0 \\
+			0 & 0 & 1 \\
+		\end{pmatrix} = b$
+		
+		Вложение блока $\begin{pmatrix}
+			0 & 1 \\
+			0 & 0 \\
+		\end{pmatrix} = \begin{pmatrix}
+			0 & 1 & 0 \\
+			0 & 0 & 1 \\
+			1 & 0 & 0 \\
+		\end{pmatrix} = c$
+		
+		Матрица, состоящая из этих блоков тоже теплицева $2 \times 2$ и ее можно вложить тоже в циркулянт: 
+		
+		$B = \begin{pmatrix}
+			a & c & b \\
+			b & a  & c \\
+			c & b & a \\
+		\end{pmatrix}$
+		
+		Теперь можем записать собственное разложение для этой штуки:
+		
+		$B = (F_3 \otimes F_3)^{-1} diag((F_3 \otimes F_3)B^{(1)}) (F_3 \otimes F_3)$
+		
+		$(F_3 \otimes F_3)B^{(1)} = F B^{(1)} = F^{(2)} + F^{(4)} + F^{(9)}$
+		
+		$F^{(2)} = (1, \omega_3, \omega^2_3, 1, \omega_3, \omega^2_3, 1, \omega_3, \omega^2_3)^T$
+		
+		$F^{(4)} = (1, 1, 1, \omega_3, \omega_3, \omega_3, \omega^2_3, \omega^2_3, \omega^2_3)^T$
+		
+		$F^{(9)} = (1, \omega^2_3, \omega_3, \omega^2_3, \omega_3, 1, \omega_3, 1, \omega^2_3)$
+		
+		$F_3^{-1} = \frac{F_3^{*}}{n} = \frac{\bar F_3}{n}, \bar \omega_3 = \omega_3^{-1}$
+		
+		$F_3^{-1} = \frac{1}{n} \cdot \begin{pmatrix}
+			1 & 1 & 1 \\
+			1 & \omega_3^{-1} & \omega^{-2}_3 \\
+			1 & \omega^{-2}_3 & \omega^{-4}_3 \\
+		\end{pmatrix}$
+		
+		$(F_3 \otimes F_3)^{-1} = F_3^{-1} \otimes F_3^{-1} = \frac{1}{n^2} \begin{pmatrix}
+			\bar F_3 & \bar F_3 & \bar F_3 \\
+			\bar F_3 & \omega_3^{-1} \bar F_3 & \omega^{-2}_3 \bar F_3 \\
+			\bar F_3 & \omega^{-2}_3 \bar F_3 & \omega^{-4}_3 \bar F_3 \\
+		\end{pmatrix}$
+		
+		Отсюда знаем собственное разложение.
+		
+		
+		\prob{15} Сколько уровней алгоритма Штрассена надо сделать, чтобы число операций с плавающей точкой в нем стало в 10 раза меньше (асимптотически), чем для наивного умножения? Считайте, что рассматриваются достаточно большие действительные квадратные матрицы порядка $2^q$, $q\in \mathbb{N}$.
+		
+			Наивный алгоритм имеет сложность $2^{3q + 1} + O(2^{2q})$ для матрицы порядка $2^q$
+			
+			У Штрассена умножений будет $M(n) = 7 M(\frac{n}{2})$ - рекуррента.
+			
+			Сложений $A(n) = 7(\frac{n}{2})	 + 18A(\frac{n}{2})^2$
+			
+			Теория с лекций кончилась - пора решать:
+			
+			посчитаем число операций у Штрассена на $i"=$ой итерации
+			
+			$M(2^q) = 7^i \cdot 2^{3(q - i)}$
+			
+			$\displaystyle A(2^q) = 7^i A(2^{q - i}) + 18 \sum_{j = 1}^{i} 7^{j - 1} \cdot 2^{2(q - j)} $
+			
+			$\displaystyle \sum_{j = 1}^{i} 7^{j - 1} \cdot 2^{2(q - j)} = 2^{2(q - i) - 1} \cdot \frac{7^i}{3} - \frac{2^{2q - 1}}{3}$
+			
+			$A(2^q) = 7^i \cdot 2^{3(q - i)} - 7^i \cdot 2^{2(q - i)} - \frac{2^{2q}}{6} + \frac{7^i 2^{2(q - i)}}{6} = 7^i 2^{3(q - i)} + O(2^{2q})$
+			
+			Смотрим отношение:
+			
+			$\displaystyle \frac{7^i \cdot 2^{3 (q - i) + 1}}{2^{3q + 1}} = 7^i \cdot 2^{-3i} \leqslant 10^{-1}$
+			
+			$\frac{7^i}{8^i} \leqslant 10^{-1}$
+			
+			$i = 18$
+			
+			при 18 будет выполняться неравенство, 17 еще не хватит.
+		
+		\prob{15} Проверьте наличие прямой и обратной устойчивости алгоритма $y = x - 2(u^\top x) u$ вычисления $y = H(u) x$, где $u,x\in\mathbb{R}^{n}$, $\|u\|_2=1$, $H(u)$ -- матрица Хаусхолдера. 
+		
+			$\frac{\|\tilde{f}(x) - f(x)\|}{\|f(x)\|} = O(\epsilon)$ машинное - прямая устойчивость 
+			
+			$\displaystyle \|y - \tilde{y}\| = \|x - 2(\sum_{i = 1}^{n} u_i x_i )u - (1 + \epsilon)(x - 2(\sum_{i = 1}^{n} u_i x_i (1 + \epsilon)^{n - i + 2}) )u \cdot (1 + \epsilon)^{n + 1}\| = \|x(1 - l + \epsilon) - 2\sum_{i = 1}^{n} u_i x_i u + 2 \sum_{i = 1}^{n} u_i x_i (1 + \epsilon)^{n - i + 2} u (1 + \epsilon)^{n + 2}\| = \|\epsilon x  - 2(\sum_{i = 1}^{n} u_i x_i (1 - (1 + \epsilon)^{2n - i + 4}))u \| \leqslant \|\epsilon x\| + 2 \sum_{i = 1}^{n} |u_i| \cdot |x_i| \cdot |\epsilon (2n - i + 4) + O(\epsilon_{machine}^2)| \cdot \|u\| \leqslant \epsilon_{machine} \|x\| + (2n + 4 ) \epsilon_{machine} (\sum_{j = 1}^{n} |u_j| |x_j|) \|u\| + o(\epsilon^2_{machine}) $
+			
+			тогда прямая устойчивость $\leqslant \epsilon_{machine} \frac{\| x \| + (2n + 4) |u^T| |x| \| u \|}{\| x - 2(u^T x) u\|} + O(\epsilon^2_{machine}) = O(\epsilon_{machine})$
+			
+			Обратная:
+			
+			$\exists \tilde{x} : \tilde{f}(x) = f(\tilde{x}) : \frac{\| \tilde{x} - x\|}{\|x\|} = O(\epsilon_{machine})$
+			
+			$\displaystyle fl(x - 2(u^T x)u) = (1 + \epsilon) (x - 2(\sum_{j = 1}^{n} u_j x_j (1 + \epsilon)^{n - i + 2}))u \cdot (1 + \epsilon)^{n + 1} = (1 + \epsilon)x - (1 + \epsilon) 2 (\sum_{j =1}^{n} u_i x_i (1 + \epsilon)^{n - i + 2})u (1 + \epsilon)^{n + 1} = \tilde{x} - 2(\sum_{i = 1}^{n} \tilde{x}_i u_i (1 + \epsilon^{n - i + 2}))u (1 + \epsilon)^{n + 1}$			
+			
+			Обратной устойчивости тут не будет тк вектор не получается возмутить.
+			
+		
+		\prob{15}
+		Пусть $f(x) = Ax$, $A\in\mathbb{R}^{n\times n}$ -- невырожденная матрица, $x\in\mathbb{R}^n$. 
+		Докажите, что 
+		\[
+		\sup_{x\not=0} \ \mathrm{cond}(f,x) = \mathrm{cond} (A).
+		\]
+		Здесь в определениях чисел обусловленности используется вторая матричная и векторная нормы.
+		
+			$cond(f, x) = \frac{\|df(x)\|}{\|f(x)\|} \|x\| $
+			
+			$df(x) = A$
+			
+			$cond(A) = \|A\| \cdot \|A^{-1}\|$
+			
+			$\displaystyle \sup_{x\not=0} cond(f, x) = \sup_{x\not=0} \frac{\|A\|_2 \|x\|_2}{\|Ax\|_2} = \sup_{x\not=0} \frac{\sigma_1 \|x\|_2}{\|Ax\|_2} = \sigma_1 \sup_{x\not=0} \frac{\|x\|_2}{\|\Sigma V^T x\|_2} = \sigma_1 \|A^{-1}\|_2 $
+			
+			$\displaystyle x = e_1 v_1 + \dots + e_n v_n$ - представление вектора через векторы матрицы $V$
+			
+			$\|x\|^2 = e_1^2 + \dots + e_n^2 $ тк векторы матрицы $V$ образуют ортонормированный базис.
+			
+			$\displaystyle \frac{e_1^2 + \dots + e_n^2}{e_1^2 \sigma_1^2 + \dots + \sigma_n^2 e_n^2} = \frac{1}{\sigma_n^2}$
+			
+			$\sigma_n^2 e_1^2 + \dots + \sigma_n^2 e_n^2 = \sigma_1^2 e_1^2 + \dots + \sigma_n^2 e_n^2$
+			
+			разность квадратов сигм неотрицательная, а значит $e_1 = \dots = e_{n - 1} $
+			
+			Отсюда, $\frac{\|x\|_2}{\| Ax \|_2} = \frac{|e_n|}{\sigma_n |e_n|} = \frac{1}{\sigma_n}$ - успех. 
+		
+		\prob{20} С помощью матричной экспоненты найдите, при каком начальном условии $y_0$ решение системы дифференциальных уравнений $y(t)$:
+		\[
+		\begin{cases}
+			\dfrac{dy}{dt} = Ay, \\ 
+			y(0) = y_0,
+		\end{cases}
+		\quad 
+		\text{с матрицей } 
+		\quad \ \ 
+		A = 
+		\begin{bmatrix}
+			0 & 0 & 1 \\
+			0 & 1 & 0 \\
+			1 & 0 & 0\\
+		\end{bmatrix},
+		\]
+		будет удовлетворять
+		$
+		y(1) = 
+		\begin{bmatrix}
+			1 & 0 & 0
+		\end{bmatrix}^\top.
+		$
+		\textbf{Замечание:} В этой задаче может пригодиться разложение в ряд Тейлора гиперболических функций.
+		
+			Из теории знаем, что решение такой задачи имеет вид:
+		
+			$y(t) = e^{At} y_0$
+			
+			$y(1) = e^{A} y_0 = \begin{pmatrix}
+				1 \\
+				0 \\
+				0 \\
+			\end{pmatrix}$
+			
+			$\displaystyle e^{At} = \sum_{i = 1}^{n}  \frac{(At)^n}{n!} = I + At + \frac{A^2 t^2}{2} + \dots = \begin{pmatrix}
+				1 + \frac{t^2}{2} + \frac{t^4}{24} + \dots & 0 & t + \frac{t^3}{6} + \dots \\
+				0 & 1 + t + \frac{t^2}{2} + \dots & 0 \\
+				t + \frac{t^3}{6} + \dots & 0 & 1 + \frac{t^2}{2} + \dots \\
+			\end{pmatrix} = \begin{pmatrix}
+			\ch(t) & 0 & \sh(t) \\
+			0 & e^t & 0 \\ 
+			\sh{t} & 0 & \ch{t} \\
+			\end{pmatrix}$
+			
+			Тогда $y_{01} = \frac{\ch{1}}{\ch^2{1} - \sh^2{1}}$
+			
+			$y_{02} = 0$
+			
+			$y_{03} = \frac{-\sh{1}}{\ch^2{1} - \sh^2{1}}$
+			
+			
+		
+		\prob{20} Пусть у $A\in\mathbb{R}^{n\times n}$, $n>1$, все ведущие подматрицы невырождены. Покажите, что матрица $D - \frac{1}{a}bc^\top$ (см. обозначения в лекции 13) также удовлетворяет этому свойству.
+		
+			$A = \begin{pmatrix}
+				a & c^T \\
+				b & D \\
+			\end{pmatrix} = \begin{pmatrix}
+				1  & 0 \\
+				\frac{b}{a} & I_{n - 1} \\
+			\end{pmatrix} \begin{pmatrix}
+			a & c^T \\ 
+			0 & D - \frac{bc^T}{a} \\
+			\end{pmatrix}$
+			
+			$S = D - \frac{b c^T}{a}$
+			
+			$\sigma_1 a_{22} - \frac{1}{a_{11}} = \frac{\delta_2}{\delta_1} \neq 0$
+			
+			$S = \begin{pmatrix}
+				1 & 0 \\
+				\frac{b_2}{s_{11}} & I_{n - 2} \\
+			\end{pmatrix} \cdot \begin{pmatrix}
+			s_{11} & c_2^T \\ 
+			0 & s_2 \\
+			\end{pmatrix}$
+			
+			$p_2 = \begin{pmatrix}
+				1 & 0 & \dots & 0 \\
+				0 & 1 & \dots & 0 \\
+				\vdots & \vdots & \dots & \vdots \\
+				0 & \frac{b_2}{s_{11}} & I_{n - 2} \\
+			\end{pmatrix}$
+			
+			тогда 
+			
+			$A = p_1 p_2 \begin{pmatrix}
+				a & c' \\
+				0  &s_{11} & c_2^T \\
+				\vdots & \vdots & \vdots \\
+				0 & 0 & s_2 \\
+			\end{pmatrix}$
+			
+			
+			$\delta_2 = S_{11} \cdot a_{11} = \sigma_1 \delta_1$
+			
+			следующую дельту можно расписать аналогично, пользуясь методом якоби и обнуляя часть матрицы под главной диагональю будем получать 
+			
+			$\sigma_k = (s_k)_{11} \cdot \sigma_{k - 1}  = \frac{\delta_{k + 1}}{\delta_{k}} \sigma_{k - 1} \neq 0$
+			
+			и получаем искомое.
+		
+	\end{enumerate}
+	
+	
+	\subsection*{Бонусные задачи}
+	\begin{enumerate}
+		\item \textbf{(30 б. балла)}.  
+		Найдите $\varepsilon_{\mathrm{machine}}$ в зависимости от $b$ и $m$ (лекция 11) как точную верхнюю грань для~$|\varepsilon|$:
+		\[
+		\mathrm{fl}(x) = x (1+\varepsilon),
+		\]
+		где $\mathrm{fl}(\cdot)$ -- округление к ближайшему и $\mathrm{fl}(x)\not = 0$. 
+		\item \textbf{(30 б. балла)}.   
+		Паде аппроксимация $f\colon\mathbb{R}\to\mathbb{R}$ -- приближение $f$ с помощью отношения полиномов $p_k, q_k$ степени не выше $k$: $f(x) \approx p_k(x)/q_k(x)$. Найдите Паде аппроксимацию для матричной экспоненты, удовлетворяющую:
+		\[
+		\|\mathrm{exp}(tA) - p_1(tA)q_1(tA)^{-1}\|_2 = \mathcal{O}(t^3).
+		\]
+		Единственны ли (с точностью до умножения на константу) полиномы, удовлетворяющие этому условию?
+		\item \textbf{(40 б. балла)}.  
+		Пусть для элементов квадратных $A,B$ порядка $n$ выполняется $0\leq a_{ij}\leq b_{ij}$, $i,j=1,\dots,n$. Покажите, что $\rho(A) \leq \rho(B)$.
+	\end{enumerate}
+	
+	
+\end{document}
