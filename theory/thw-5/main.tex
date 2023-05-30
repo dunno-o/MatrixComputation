@@ -1,0 +1,253 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{indentfirst}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+\usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{soul}
+\geometry{a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\makeatletter
+\def\thickhrulefill#1{\leavevmode\leaders\hrule height#1\hfill\kern\z@}
+\makeatother
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+% Розовый текст в рамке
+\newcommand{\pinkframed}[2][rectangle,draw,fill=purple!20]{%
+	\tikz[baseline=-0.6ex] \node [#1]{#2};}%
+
+\newenvironment{result} { \sgap
+	\smallskip
+	\pinkframed{ \textbf{Ответ:} }}{}
+
+\renewcommand{\headrule}{
+	\color{black}\vspace{-8pt}
+	\thickhrulefill{.6pt}
+	
+	\vspace{-9pt}\thickhrulefill{2.4pt}
+}
+
+\newcommand{\un}{\underline}
+\newcommand{\ov}{\overline}
+
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\CC}{\mathbb{C}}
+
+\newcommand{\A}{\; \forall \;}
+\newcommand{\E}{\; \exists \;}
+\newcommand{\nE}{\; \nexists \;}
+
+\newcommand{\vp}{\varphi}
+\newcommand{\e}{\varepsilon}
+\newcommand{\lm}{\lambda}
+\newcommand{\ds}{\displaystyle}
+
+\newcommand{\prob}[1]{\item \textbf{(#1 баллов)}.}
+
+
+\rhead{Парфенов Артем БПМИ219}
+\lhead{Основы матричных вычислений ДЗ-5}
+\begin{document}
+	
+	\begin{enumerate}
+		\prob{15} Посчитайте (аналитически) $LU$-разложение матрицы
+		\[
+		A = 
+		\begin{bmatrix}
+			1 & 2 & 3 \\
+			4 & 5 & 6 \\
+			7 & 8 & 9 \\
+		\end{bmatrix}
+		\]
+		с помощью элементарных преобразований $Z_k$.
+		Объясните, почему в данном случае существование $LU$-разложения не противоречит теореме о существовании $LU$-разложения из лекций.
+		
+		Если привести $A$ к ступенчатому виду, то получим матрицы $U, L^{-1}$
+		
+		$\begin{pmatrix}
+			1& 2 & 3 & \vrule & 1 & 0 & 0 \\
+			4 & 5 & 6 & \vrule & 0 & 1 & 0 \\
+			7 & 8 & 9 & \vrule & 0 & 0 & 1 \\
+		\end{pmatrix} \to \begin{pmatrix}
+		1 & 2 & 3 & \vrule & 1 & 0 & 0 \\
+		0 & -3 & -6 & \vrule & -4 & 1 & 0 \\
+		0 & 0 & 0 & \vrule & 1 & -2 & 1 \\
+		\end{pmatrix}$
+		
+		Слева получили $U$, справа $L^{-1}$
+		
+		Тогда $A = \begin{pmatrix}
+			1 & 0 & 0 \\ 
+			4 & 1 & 0 \\
+			7 & 2 & 1 \\
+		\end{pmatrix} \cdot \begin{pmatrix}
+		1 & 2 & 3 \\
+		0 & -3 & -6 \\
+		0 & 0 & 0 \\
+		\end{pmatrix}$
+		
+		Теорема из лекции работает для невырожденных матриц, а ну нас $A$ - вырождена, поэтому все работает.
+		
+		
+		\prob{35} Пусть симметричная положительно определенная матрица $A\in \mathbb{R}^{n\times n}$ задана в следующем виде:
+		$$A = \begin{bmatrix} a&c^{\top}\\c&D\end{bmatrix},$$
+		где $a\in \mathbb{R}$, $c\in \mathbb{R}^{n-1}$, $D\in \mathbb{R}^{(n-1)\times (n-1)}$. Исключением Холецкого первой строки назовем следующую операцию:
+		\begin{equation}\label{eq:chol}A =  
+			\begin{bmatrix} a&c^{\top}\\c&D\end{bmatrix} = 
+			\begin{bmatrix} l&0\\\frac{c}{l}&I\end{bmatrix}
+			\begin{bmatrix} 1&0\\0&D-\frac{~cc^{\top}}{a}\end{bmatrix}
+			\begin{bmatrix} l&\frac{~c^{\top}}{l}\\0&I\end{bmatrix} = L_0A_1L_0^{\top}, \quad l = \sqrt{a}.
+		\end{equation}
+		Применив разложение аналогичное~\eqref{eq:chol} к дополнению по Шуру $D-\frac{~cc^{\top}}{a}$ и т.д., получим разложение Холецкого. 
+		
+		\begin{enumerate}
+			\prob{9} Докажите, что $D-\frac{~cc^{\top}}{a}$ будет симметричной положительно определенной. 
+			
+			Тут написано дополнение по Шуру. $A$ - строго регулярна, знаем, что дополнение по Шуру для нее тоже строго регулярно. 
+			
+			Все угловые миноры дополнения по Шуру положительные, поэтому оно положительно определено. $D, c 	\cdot c^T$ симметричные и дополнение тогда тоже таким будет.			
+			\prob{4} Для матрицы 
+			\begin{equation}\label{eq:a}A = \begin{bmatrix} 4&1&2&0&1\\1&4&0&0&0\\2&0&5&0&0\\0&0&0&1&3 \\ 1&0&0&3&4\end{bmatrix} \end{equation}
+			постройте ее граф G$(A)$.
+			
+			Вершины - столбцы матрицы от 1 до 5 слева направо. Задам граф списком ребер:
+			
+			$1 \to 2  \\ 1 \to 3 \\  1 \to 5 \\  5 \to 4$
+			
+			(ребра если что неориентированы)
+			
+			\prob{8} Нарисуйте на графе $G(A)$ (выделите цветом) возникающие заполнения у дополнения по Шуру $D-\frac{~cc^{\top}}{a}$ и продолжите эту процедуру рекурсивно. Находить конкретные числа не обязательно.
+			
+			Добавятся ребра $2 \to 3 \\ 2 \to 5  \\ 3 \to 5$
+			
+			(ребра если что неориентированы)
+			
+			Первая итерация $D - \frac{cc^T}{a} = \frac{1}{4} \begin{pmatrix}
+				15 & -2 & 0 & -1 \\
+				-2 & 10 & 0 & -2 \\
+				0 & 0 & 4 & 12 \\
+				-1 & -2 & 12 & 15 \\
+			\end{pmatrix}$
+			
+			
+			На второй итерации $= \frac{1}{60} \begin{pmatrix}
+				236 & 0 & -32 \\
+				0 & 60 & 180 \\
+				-32 & 180 & 224 \\
+			\end{pmatrix}$
+			
+			в эти два раза никаких ребер не добавилось, дальше тоже не будет.
+			
+			\prob{8} Примените к графу G$(A)$ алгоритм minimal degree ordering (вычислять разложение для матрицы не нужно, этот пункт подразумевает работу только с графом) и соответствующую матрицу $PAP^\top$. На сколько сократилось число ребер заполнения при исключении вершин в новом порядке?
+			
+			Наименьшая степень у второй вершины, выбрасываем. 
+			
+			Потом третью, затем первую, четвертую и остается пятая.
+			
+			$P = \begin{pmatrix}
+				0 & 1 & 0 & 0 & 0 \\
+				0 & 0 & 1 & 0 & 0 \\
+				1 & 0 & 0 & 0 & 0 \\
+				0 & 0 & 0 & 1 & 0 \\
+				0 & 0 & 0 & 0 & 1 \\
+			\end{pmatrix}$
+			
+			$PAP^T = \begin{pmatrix}
+				4 & 0 & 1 & 0 & 0 \\
+				0 & 5 & 2 & 0 & 0 \\
+				1 & 2 & 4 & 0 & 1 \\
+				0 & 0 & 0 & 1 & 3 \\
+				0 & 0 & 1 & 3 & 4 \\
+			\end{pmatrix}$
+			
+			в новом графе ребра $1 \to \\ 3 \to 2 \\ 5 \to 3 \\ 4 \to 5$
+			
+			
+			
+			\prob{6} Запишите матрицу $A$ из~\eqref{eq:a} в CSR формате. 
+			
+			
+				$rows = \{0, 4, 6 ,8, 10, 13 \}$
+				
+				$cols = \{0, 1, 2, 4, 0, 1 0, 2, 3, 4, 0, 3, 4 \}$
+				
+				$values = \{4, 1, 2, 1, 1, 4, 2,5, 1, 3, 1, 3, 4\}$
+			
+		\end{enumerate}
+		
+		\prob{25} 
+		\begin{enumerate}
+			\item Пусть $A\in\mathbb{R}^{n\times n}$ -- произвольная невырожденная матрица. Пусть рассматривается итерационный процесс вида $x_{k+1} = x_k + \tau_k r_k$, $r_k = b - Ax_k$. 
+			Получите оптимальные параметры $\tau_k \in \mathbb{R}$, минимизирующие функционал невязки $J(x) = \|b - Ax\|_2^2$ на каждом шаге итерационного процесса. 
+			Убедитесь, что полученное выражение зависит только от $A$ и $r_k$. 
+			
+				$r_{k + 1} = b - A X_{k + 1} = b - A(X_k - \tau_k r_k) = b - AX_k - \tau_k Ar_k = (I- \tau_k A) r_k$
+				
+				$\|b - AX_{k + 1}\|_2^2 = \langle r_k, r_k \rangle + \tau^2_k \langle Ar_k, Ar_k \rangle - 2\tau_k \langle r_k, Ar_k \rangle$
+				
+				$\tau_k = \frac{\langle r_k, Ar_k \rangle}{\langle Ar_k, Ar_k \rangle}$
+			
+			
+			\item В случае $A = A^\top > 0$ покажите, что для полученного процесса выполняется:
+			\[
+			\|r_{k}\|_2 \leq  \left( \frac{\mathrm{cond}_2(A) - 1}{\mathrm{cond}_2(A) + 1} \right)^k \, \|r_0\|_2.
+			\]
+			
+				$\| r_{k + 1}\|_2 = min_\tau(\| r_k - \tau A r_k\| )\leqslant \|(I - \frac{2A}{\lambda_1 + \lambda_n})r_k\|_2 \leqslant \|I - \frac{2A}{\lambda_1 + \lambda_n}\|_2 \|r_k\|_2	\leqslant \frac{cond_2(A) - 1}{cond_2(A) + 1} \cdot \|r_k\|_2 $
+				
+				$\leqslant (\frac{cond_2(A) - 1}{cond_2(A) + 1})^k \|r_0\|_2$
+				
+			
+		\end{enumerate}
+		\prob{25} Покажите, что для достижения точности $\frac{\|e_k\|_2}{\|e_0\|_2} \leq \varepsilon$ для заданного $0< \varepsilon < 1$ в методе Чебышева необходимо сделать не больше
+		\[
+		N(\varepsilon) = 1+ \frac{\sqrt{\mathrm{cond}_2 (A)}}{2} \ln (2\varepsilon^{-1})
+		\]
+		итераций (при достаточно большом $\mathrm{cond}_2 (A)$). 
+		
+			$\| e_k \|_2 \leqslant 2 \cdot (\frac{\sqrt{cond_2(A)} - 1}{\sqrt{cond_2(A)} + 1})^k$
+			
+			
+			Нужно, чтобы правая часть была $\leqslant \epsilon$
+			
+			$\ln{2} + k(\ln{\sqrt{cond_2(A)} - 1}) - \ln{\sqrt{cond_2(A)} + 1} \leqslant \ln \epsilon$
+			
+			$k \leqslant \frac{\ln{\epsilon / 2}}{\ln{\frac{\sqrt{cond_2(A)} - 1}{\sqrt{cond_2(A)} + 1}}} = \frac{\ln{2/ \epsilon}}{\ln{1 + \frac{2}{\sqrt{cond_2(A)} - 1}}} \leqslant \frac{\ln{2 / \epsilon} \cdot (\sqrt{cond_2(A)} - 1)^2}{2 \cdot (\sqrt{cond_2(A)} - 1) - 2} = 1 + \frac{\sqrt{cond_2(A)}}{2} \cdot \ln{\frac{2}{\epsilon}}$
+		
+	\end{enumerate}
+	
+	\subsection*{Бонусные задачи}
+	
+	
+	\begin{enumerate}
+		\item \textbf{(50 б. балла)}.   Пусть $A\in\mathbb{R}^{n\times n}$ обладает строгим строчным диагональным преобладанием.
+		Докажите, что для такой матрицы $LU$-разложение существует, и для коэффициента роста $\rho = \|U\|_C / \|A\|_C$, где $A=LU$, справедливо $\rho\leq 2$.
+		
+		\item \textbf{(50 б. балла)}.   Дана матрица $A \in \mathbb{R}^{2\times 2}$, $A = A^\top > 0$ и вектор правой части $b \in \mathbb{R}^2$.
+		Покажите, что метод скорейшего спуска для этой системы либо сходится не более, чем за одну итерацию, либо сходится не быстрее, чем со скоростью геометрической прогрессии, то есть для последовательности невязок $r_k$ верно неравенство:
+		\[
+		\|r_k\|_2 \geq c \alpha^{k} \|r_0\|_2, \quad k \geq 0,
+		\]
+		где $\alpha$ и $c$ "--- положительные константы (которые могут зависеть от $A$ и $b$).
+	\end{enumerate}
+	
+	
+\end{document}
